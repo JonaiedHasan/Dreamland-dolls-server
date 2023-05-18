@@ -30,15 +30,32 @@ async function run() {
         // Connect the client to the server	(optional starting in v4.7)
         await client.connect();
 
-        const toysCollection = client.db('toysWebsite').collection('toys');
-
+        const toysCollection = client.db('toysWebsite').collection('toys'); 
 
         // get all toys
         app.get('/allToys', async(req,res)=>{
-            const cursor = toysCollection.find();
-            const result = await cursor.toArray();
+            // const cursor = toysCollection.find();
+            
+            const result = await toysCollection.find().sort({ createdAt: -1 }).toArray();
             res.send(result)
         })
+
+        //  app.get('/myToys/:id', async(req, res)=>{
+        //     const id = req.params.id;
+        //     const query = {_id: new ObjectId(id)}
+        //     const result = await toysCollection.findOne(query);
+        //     res.send(result);
+        //  })
+        
+
+        app.post('/allToys', async(req,res)=>{
+            const newToys = req.body;
+            newToys.createdAt = new Date();
+            console.log(newToys);
+            const result = await toysCollection.insertOne(newToys);
+            res.send(result)
+        })
+
       
         app.get('/allToys/:id', async(req,res)=>{
             const id = req.params.id;
@@ -46,7 +63,22 @@ async function run() {
             const result = await toysCollection.findOne(query);
             res.send(result)
         })
+       
 
+        app.get('/myToys/:email',async(req, res) => {
+            console.log(req.params.email)
+             const result = await toysCollection.find({
+                userEmail: req.params.email}).toArray();
+                res.send(result)
+        })
+
+
+        app.delete('/myToys/:id', async(req , res) =>{
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id)}
+            const result = await toysCollection.deleteOne(query);
+            res.send(result)
+        })
 
 
 
