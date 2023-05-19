@@ -40,12 +40,12 @@ async function run() {
             res.send(result)
         })
 
-        //  app.get('/myToys/:id', async(req, res)=>{
-        //     const id = req.params.id;
-        //     const query = {_id: new ObjectId(id)}
-        //     const result = await toysCollection.findOne(query);
-        //     res.send(result);
-        //  })
+         app.get('/Toys/:id', async(req, res)=>{
+            const id = req.params.id;
+            const query = {_id: new ObjectId(id)}
+            const result = await toysCollection.findOne(query);
+            res.send(result);
+         })
         
 
         app.post('/allToys', async(req,res)=>{
@@ -55,6 +55,29 @@ async function run() {
             const result = await toysCollection.insertOne(newToys);
             res.send(result)
         })
+
+        app.put('/allToys/:id', async(req, res) =>{
+            const id = req.params.id;
+            const filter = {_id : new ObjectId(id)}
+            const options = { upsert : true};
+            const updateToys = req.body;
+            const Toys = {
+                $set :{
+                    dollName:updateToys.dollName,
+                    sellerName:updateToys.sellerName,
+                    userEmail:updateToys.userEmail,
+                    subCategory:updateToys.subCategory,
+                    price:updateToys.price,
+                    rating:updateToys.rating,
+                    quantity:updateToys.quantity,
+                    photo:updateToys.photo,
+                    details:updateToys.details,
+                   
+                }
+            }
+            const result = await toysCollection.updateOne(filter,Toys,options)
+            res.send(result)
+        } )
 
       
         app.get('/allToys/:id', async(req,res)=>{
