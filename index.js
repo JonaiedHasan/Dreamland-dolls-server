@@ -96,6 +96,13 @@ async function run() {
         })
 
 
+        app.get('/cToys/:text', async(req , res) =>{
+            console.log(req.params.text);
+            const result = await toysCollection.find({subCategory:req.params.text}).toArray();
+            res.send(result)
+            console.log(result);
+        })
+
         app.delete('/myToys/:id', async(req , res) =>{
             const id = req.params.id;
             const query = { _id: new ObjectId(id)}
