@@ -27,7 +27,7 @@ const client = new MongoClient(uri, {
 async function run() {
     try {
         // Connect the client to the server	(optional starting in v4.7)
-        await client.connect();
+        // await client.connect();
 
         const toysCollection = client.db('toysWebsite').collection('toys');
 
@@ -103,6 +103,7 @@ async function run() {
         })
 
 
+
         app.get('/myToys/:email', async (req, res) => {
             console.log(req.params.email)
             const result = await toysCollection.find({
@@ -110,6 +111,23 @@ async function run() {
             }).toArray();
             res.send(result)
         })
+
+        app.get('/myToysHigh', async (req, res) => {
+            let query = {};
+            if (req, query?.userEmail) {
+                query = { userEmail: req.query.userEmail };
+            }
+            const result = await toysCollection
+                .find(query)
+                .sort({ price: -1 })
+                .collation({
+                    locale: 'en_US',
+                    numericOrdering: true
+                })
+                .toArray();
+                res.send(result)
+        })
+       
 
 
         app.get('/categoryToys/:text', async (req, res) => {
