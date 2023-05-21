@@ -114,7 +114,7 @@ async function run() {
 
         app.get('/myToysHigh', async (req, res) => {
             let query = {};
-            if (req, query?.userEmail) {
+            if (req.query?.userEmail) {
                 query = { userEmail: req.query.userEmail };
             }
             const result = await toysCollection
@@ -131,7 +131,7 @@ async function run() {
 
         app.get('/myToysLow', async (req, res) => {
             let query = {};
-            if (req, query?.userEmail) {
+            if (req.query?.userEmail) {
                 query = { userEmail: req.query.userEmail };
             }
             const result = await toysCollection
