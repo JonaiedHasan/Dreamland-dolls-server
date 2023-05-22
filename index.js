@@ -32,9 +32,9 @@ async function run() {
         const toysCollection = client.db('toysWebsite').collection('toys');
 
 
-        const indexKeys = { dollName: 1 }
-        const indexOptions = { name: 'dollName' }
-        const result = await toysCollection.createIndex(indexKeys, indexOptions);
+        // const indexKeys = { dollName: 1 }
+        // const indexOptions = { name: 'dollName' }
+        // const result = await toysCollection.createIndex(indexKeys, indexOptions);
 
         app.get('/dollName/:text', async (req, res) => {
             const searchName = req.params.text;
